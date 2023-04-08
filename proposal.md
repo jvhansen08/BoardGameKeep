@@ -22,7 +22,17 @@
     * Use Geolocation API
 
 4. Time Estimation
-    * 
+    * Firebase Auth: 1-2 hours
+    * Firebase File Storage: 1-2 hours
+    * Firebase Firestore: 0.5 hour
+    * Firebase Backend Deployment: 1-2 hours
+    * Github pages hosting frontend: 0 hours
+    * Google Geolocation API: 1-2 hours
+    * Creating Models for backend: 1-2 hours
+    * Frontend design to show geolocation: 1-2 hours
+    * Storing images in Firebase: 2-4 hours (I remember this being difficult)
+    * React Router navigation: 1 hour
+    * Frontend design of pages / board game info: 3-4 hours
 
 5. Group Members
 
