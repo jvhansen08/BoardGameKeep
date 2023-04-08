@@ -30,6 +30,6 @@
 
     Aaron Hanks - A02275937
 
-    Logan Ballard - 
+    Logan Ballard - A02253793
 
     Landon Doyle - 
