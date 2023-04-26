@@ -18,14 +18,11 @@ import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase";
+import { updateProfile } from "firebase/auth";
 
 export const CreateAccount = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
-
-  const navigateToHome = () => {
-    navigate("/dashboard");
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +60,10 @@ export const CreateAccount = () => {
       }
 
       await createUserWithEmailAndPassword(auth, values.email, values.password)
-        .then(() => {
+        .then((userCredential) => {
+          updateProfile(userCredential.user, {
+            displayName: `${values.firstName} ${values.lastName}`,
+          });
           navigate("/");
         })
         .catch((error) => {
@@ -78,7 +78,11 @@ export const CreateAccount = () => {
         <CardContent>
           <Stack gap="2rem" justifyContent="center">
             <Stack direction="row">
-              <IconButton onClick={navigateToHome}>
+              <IconButton
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
                 <ArrowBackIcon />
               </IconButton>
               <Typography
@@ -142,7 +146,9 @@ export const CreateAccount = () => {
             <Stack direction="row" gap="1rem" justifyContent="center">
               <Button
                 variant="text"
-                onClick={() => navigate("/login")}
+                onClick={() => {
+                  navigate("/login");
+                }}
                 sx={{ mx: 2 }}
               >
                 Login
