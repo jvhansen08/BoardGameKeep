@@ -16,6 +16,8 @@ import * as yup from "yup";
 import { formikTextFieldProps } from "../utils/helperFunctions";
 import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 export const CreateAccount = () => {
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ export const CreateAccount = () => {
       password: yup.string().required("Required"),
       passwordValidation: yup.string().required("Required"),
     }),
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       setError(null);
       const errors = [];
 
@@ -59,21 +61,14 @@ export const CreateAccount = () => {
         setSubmitting(false);
         return;
       }
-      // api.post('users', {
-      //     firstName: values.firstName,
-      //     lastName: values.lastName,
-      //     password: values.password,
-      //     email: values.email,
-      // })
-      //     .then((res: { token: string; message: string }) => {
-      //         if (res.token) {
-      //             window.localStorage.setItem('token', res.token)
-      //             navigateToHome()
-      //         } else {
-      //             setError(res.message)
-      //         }
-      //     })
-      //     .then(() => setSubmitting(false))
+
+      await createUserWithEmailAndPassword(auth, values.email, values.password)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          setError(error.message);
+        });
     },
   });
 

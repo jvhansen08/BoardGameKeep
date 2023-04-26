@@ -16,6 +16,8 @@ import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { formikTextFieldProps } from "../utils/helperFunctions";
 import { LoadingButton } from "@mui/lab";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -30,20 +32,15 @@ export const Login = () => {
       email: yup.string().email().required("Required"),
       password: yup.string().required("Required"),
     }),
-    onSubmit: (values, { setSubmitting }) => {
-      // api.post('users/login', {
-      //     password: values.password,
-      //     email: values.email,
-      // })
-      //     .then((res) => {
-      //         if (res.token) {
-      //             window.localStorage.setItem('token', res.token)
-      //             navigate('/')
-      //         } else {
-      //             setError(res.message)
-      //         }
-      //     })
-      //     .then(() => setSubmitting(false))
+    onSubmit: async (values) => {
+      setError(null);
+      await signInWithEmailAndPassword(auth, values.email, values.password)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          setError(error.message);
+        });
     },
   });
 
