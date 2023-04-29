@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
-import { DashboardGame } from "../components/dashboardGame";
+import { DashboardGame } from "../components/DashboardGame.tsx"
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 

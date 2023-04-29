@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card"
 import Typography from '@mui/material/Typography';
+import { UpdateBoardgame } from "./UpdateBoardgame";
 
 export type gameProps = {
     id: number,
@@ -27,9 +28,6 @@ export function DashboardGame(game: gameProps) {
             <Typography>
                 Time: {game.minPlayTime}-{game.maxPlayTime}
             </Typography>
-            <Button sx={{alignItems:"end"}}>
-                Edit
-            </Button>
         </Card>
     )
 }
