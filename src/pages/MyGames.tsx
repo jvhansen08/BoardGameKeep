@@ -1,70 +1,21 @@
-import { FC, useEffect } from "react";
-import { auth } from "../lib/firebase";
+import { FC, useEffect, useState } from "react";
+import { auth, db } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DashboardGame } from "../components/dashboardGame";
-import { Stack } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
+import { AddBoardGame } from "../components/AddBoardGame";
+import { QuerySnapshot, collection, doc, getDocs } from "firebase/firestore";
+import { Boardgame } from "../types/types";
 
-const dummyData = [
-  {
-    id: 1,
-    title: "Diceforge",
-    minPlayers: 2,
-    maxPlayers: 4,
-    minPlayTime: 20,
-    maxPlayTime: 45,
-    rating: 9,
-  },
-  {
-    id: 2,
-    title: "Shadows over Camelot",
-    minPlayers: 3,
-    maxPlayers: 7,
-    minPlayTime: 60,
-    maxPlayTime: 120,
-    rating: 8,
-  },
-  {
-    id: 3,
-    title: "Diceforge",
-    minPlayers: 2,
-    maxPlayers: 4,
-    minPlayTime: 20,
-    maxPlayTime: 45,
-    rating: 9,
-  },
-  {
-    id: 4,
-    title: "Shadows over Camelot",
-    minPlayers: 3,
-    maxPlayers: 7,
-    minPlayTime: 60,
-    maxPlayTime: 120,
-    rating: 8,
-  },
-  {
-    id: 5,
-    title: "Shadows over Camelot",
-    minPlayers: 3,
-    maxPlayers: 7,
-    minPlayTime: 60,
-    maxPlayTime: 120,
-    rating: 8,
-  },
-  {
-    id: 6,
-    title: "Shadows over Camelot",
-    minPlayers: 3,
-    maxPlayers: 7,
-    minPlayTime: 60,
-    maxPlayTime: 120,
-    rating: 8,
-  },
-];
 
 export const MyGames: FC = () => {
   const navigate = useNavigate();
+  const [games, setGames] = useState<Boardgame[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(new Date());
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -74,8 +25,28 @@ export const MyGames: FC = () => {
     });
   }, [navigate]);
 
+  useEffect(() => {
+    getDocs(collection(db, "boardGames")).then((querySnapshot) => {
+      const games: Boardgame[] = [];
+      querySnapshot.forEach((doc) => {
+        games.push(doc.data() as Boardgame);
+      });
+      setGames(games);
+  }).catch((error) => {
+    setError(true);
+  }).finally(() => {
+    setLoading(false);
+  });
+  }, [refreshTrigger]);
+  
+
+
   return (
     <Stack alignItems={"center"} justifyContent={"center"} sx={{mt:10}}>
+      <AddBoardGame setRefreshTrigger={setRefreshTrigger}/>
+      {loading && <CircularProgress />}
+      {error && <Typography>Something went wrong</Typography>}
+      {games.length === 0 && !loading && !error && <Typography variant="h4">No games found</Typography>}
         <Box
           sx={{
             display: "flex",
@@ -87,7 +58,7 @@ export const MyGames: FC = () => {
             overflowY: "auto",
           }}
         >
-          {dummyData.map((game) => (
+          {games.map((game) => (
             <div key={game.id} style={{ padding: "15px" }}>
               <DashboardGame {...game} />
             </div>
