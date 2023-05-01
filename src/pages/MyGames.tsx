@@ -69,8 +69,8 @@ export const MyGames: FC = () => {
           overflowY: "auto",
         }}
       >
-        {games.map((game) => (
-          <div key={game.id} style={{ padding: "15px" }}>
+        {games.map((game, index) => (
+          <div key={index} style={{ padding: "15px" }}>
             <DashboardGame {...game} />
           </div>
         ))}

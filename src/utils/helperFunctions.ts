@@ -23,6 +23,7 @@ export function formikTextFieldProps<T extends FormikValues>(
     label,
     name: field.toString(),
     value: formik.values[field],
+    fullWidth: true,
     onChange: formik.handleChange,
     error: formik.touched[field] && !!formik.errors[field],
   };
@@ -37,6 +38,7 @@ export function formikTextFieldNumberProps<T extends FormikValues>(
     label,
     type: "number",
     name: field.toString(),
+    fullWidth: true,
     value: formik.values[field],
     onChange: formik.handleChange,
     error: formik.touched[field] && !!formik.errors[field],
