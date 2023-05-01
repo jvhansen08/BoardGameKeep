@@ -1,11 +1,19 @@
-import { Card, CardContent, CardHeader, Stack, Typography } from "@mui/material";
+import { Alert, Button, Card, CardContent, CardHeader, Stack, TextField, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../lib/firebase";
+import { formikTextFieldProps } from "../utils/helperFunctions";
+import { updateEmail, updatePassword, updateProfile } from "firebase/auth";
 
 export const Profile: FC = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(auth.currentUser);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordValidation, setPasswordValidation] = useState("");
+  const [name, setName] = useState("");
+  const [refreshTrigger, setRefreshTrigger] = useState(new Date());
+  const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -13,17 +21,57 @@ export const Profile: FC = () => {
         navigate("/login");
       }else{
         setUser(user);
+        setName(user.displayName || "");
+        setEmail(user.email || "");
       }
     });
-  }, [navigate]);
+  }, [navigate, auth, auth.currentUser, refreshTrigger]);
+
+  const handleUpdateName = async () => {
+    if (auth.currentUser) {
+      updateProfile(auth.currentUser, {
+        displayName: name,
+        }).then(() => {
+          setRefreshTrigger(new Date());
+        }
+      );
+    }
+  };
+
+  const handleUpdateEmail = async () => {
+    if (auth.currentUser) {
+      updateEmail(auth.currentUser, email).then(() => {
+        setRefreshTrigger(new Date());
+      });  
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    if (auth.currentUser) {
+      updatePassword(auth.currentUser, password).then(() => {
+        setNewPassword(password);
+      });
+    }
+  }
 
   return (
     <Stack justifyContent={"center"} alignItems={"center"} height={"90vh"}>
-      <Card sx={{width:"40vw", height:"40vh"}}>
+      <Card sx={{width:"40vw"}}>
         <CardContent>
           <CardHeader title={"Profile"} />
-          <Typography variant={"h5"}>{user?.displayName}</Typography>
-          <Typography variant={"h5"}>{user?.email}</Typography>
+          <Stack spacing={2}>
+          <Typography variant={"h5"}>Name</Typography>
+          <TextField value={name} onChange={(e) => setName(e.target.value)}/>
+          <Button disabled={name === user?.displayName || name === ""} onClick={handleUpdateName}>Update Name</Button>
+          <Typography variant={"h5"}>Email</Typography>
+          <TextField value={email} onChange={(e) => setEmail(e.target.value)}/>
+          <Button disabled={email === user?.email || name === ""} onClick={handleUpdateEmail}>Update Email</Button>
+          <Typography variant={"h5"}>Change Your Password</Typography>
+          <TextField helperText="New Password" value={password} onChange={(e) => setPassword(e.target.value)} type={"password"}/>
+          <TextField helperText="Confirm New Password" value={passwordValidation} onChange={(e) => setPasswordValidation(e.target.value)} type={"password"}/>
+          {password !== passwordValidation && <Alert severity="error">Passwords do not match</Alert>}
+          <Button disabled={password === "" || password !== passwordValidation || password === newPassword} onClick={handleUpdatePassword}>Update Password</Button>
+          </Stack>
         </CardContent>
       </Card>
     </Stack>
