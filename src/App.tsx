@@ -9,6 +9,7 @@ import { NearbyStores } from "./pages/NearbyStores";
 import { PickGame } from "./pages/PickGame";
 import { Profile } from "./pages/Profile";
 import { LandingPage } from "./pages/LandingPage";
+import { BadPage } from "./pages/BadPage";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <LandingPage />,
+      },
+      {
+        path: "*",
+        element: <BadPage/>,
       }
     ],
   },
