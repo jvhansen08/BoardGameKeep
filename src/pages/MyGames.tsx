@@ -52,7 +52,6 @@ export const MyGames: FC = () => {
 
   return (
     <Stack alignItems={"center"} justifyContent={"center"} sx={{ mt: 10 }}>
-      <AddBoardGame setRefreshTrigger={setRefreshTrigger} />
       {loading && <CircularProgress />}
       {error && <Typography>Something went wrong</Typography>}
       {games.length === 0 && !loading && !error && (
@@ -75,6 +74,9 @@ export const MyGames: FC = () => {
           </div>
         ))}
       </Box>
+      <Stack sx={{mt:4}} direction="row">
+        <AddBoardGame setRefreshTrigger={setRefreshTrigger} />
+      </Stack>
     </Stack>
   );
 };

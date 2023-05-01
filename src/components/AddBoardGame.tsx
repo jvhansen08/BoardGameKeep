@@ -12,6 +12,7 @@ import {
 import React, { FC, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
+import AddIcon from "@mui/icons-material/Add";
 import * as yup from "yup";
 import {
   formikTextFieldNumberProps,
@@ -100,8 +101,9 @@ export const AddBoardGame: FC<AddBoardGameProps> = (props) => {
           formik.resetForm();
           setOpen(true);
         }}
+        variant="contained"
       >
-        Add Board Game
+        <AddIcon />    Add Board Game
       </Button>
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Add Board Game</DialogTitle>
