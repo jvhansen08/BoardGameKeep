@@ -1,13 +1,19 @@
-import "./App.css";
 import { useEffect } from "react";
 import { CreateAccount } from "./pages/CreateAccount";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/Login";
-import { Home } from "./pages/Home";
+import { MyGames } from "./pages/MyGames";
+import AppHeader from "./components/AppHeader";
+import { Root } from "./pages/Root";
+import { NearbyStores } from "./pages/NearbyStores";
+import { PickGame } from "./pages/PickGame";
+import { Profile } from "./pages/Profile";
+import { LandingPage } from "./pages/LandingPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Root />,
     children: [
       {
         path: "/login",
@@ -18,22 +24,30 @@ const router = createBrowserRouter([
         element: <CreateAccount />,
       },
       {
-        path: "/",
-        element: <Home />,
+        path: "/my-games",
+        element: <MyGames />,
       },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        path: "/pick-game",
+        element: <PickGame/>,
+      },
+      {
+        path: "/nearby-stores",
+        element: <NearbyStores/>,
+      },
+      {
+        path: "",
+        element: <LandingPage />,
+      }
     ],
   },
 ]);
 
 function App() {
-  useEffect(() => {
-    console.log("Hello World");
-    fetch(
-      "https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=games&location=41.7759,-111.8068&radius=50000&key=AIzaSyCjjeTkUXYJ_HafVKsfPkmBHwJ3GM1AYDQ"
-    )
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  }, []);
   return (
     <>
       <RouterProvider router={router} />

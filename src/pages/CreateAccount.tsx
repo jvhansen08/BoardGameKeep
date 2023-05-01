@@ -73,8 +73,8 @@ export const CreateAccount = () => {
   });
 
   return (
-    <Container maxWidth="md">
-      <Card sx={{ mt: 24, mb: 24 }}>
+    <Stack justifyContent={"center"} alignItems={"center"} height="90vh">
+      <Card sx={{width:"40vw"}}>
         <CardContent>
           <Stack gap="2rem" justifyContent="center">
             <Stack direction="row">
@@ -157,6 +157,6 @@ export const CreateAccount = () => {
           </Stack>
         </CardContent>
       </Card>
-    </Container>
+    </Stack>
   );
 };

@@ -15,7 +15,7 @@ export type gameProps = {
 
 export function DashboardGame(game: gameProps) {
     return(
-        <Card sx={{ minWidth: 225, padding: 3}}>
+        <Card sx={{ maxWidth: 225, minWidth: 225, padding: 3, minHeight:160, maxHeight:160}}>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 Game
             </Typography>

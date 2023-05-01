@@ -2,6 +2,7 @@ import { ArrowBack } from "@mui/icons-material";
 import {
   Alert,
   Button,
+  Card,
   CardContent,
   CardHeader,
   Container,
@@ -36,7 +37,7 @@ export const Login = () => {
       setError(null);
       await signInWithEmailAndPassword(auth, values.email, values.password)
         .then(() => {
-          navigate("/");
+          navigate("/my-games");
         })
         .catch((error) => {
           setError(error.message);
@@ -59,53 +60,59 @@ export const Login = () => {
   }, [formik]);
 
   return (
-    <Container maxWidth="md">
-      <CardHeader>Login</CardHeader>
-      <CardContent>
-        <Stack gap="2em">
-          <Stack direction="row">
-            <IconButton
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              <ArrowBack />
-            </IconButton>
-            <Typography variant="h4" align="center" width="100%" sx={{ mr: 5 }}>
-              Sign In
-            </Typography>
-          </Stack>
-          <TextField
-            {...formikTextFieldProps(formik, "email", "Email")}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-          <TextField
-            {...formikTextFieldProps(formik, "password", "Password")}
-            helperText={formik.touched.password && formik.errors.password}
-            type="password"
-          />
-          {error && <Alert severity="error">{error}</Alert>}
-          <Stack direction="row" justifyContent="center">
-            <LoadingButton
-              variant="contained"
-              onClick={formik.submitForm}
-              loading={formik.isSubmitting}
-            >
-              Login
-            </LoadingButton>
-          </Stack>
+    <Stack justifyContent={"center"} alignItems={"center"} height="90vh">
+      <Card sx={{width:"40vw"}}>
+        <CardContent>
+          <Stack gap="2em">
+            <Stack direction="row">
+              <IconButton
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                <ArrowBack />
+              </IconButton>
+              <Typography
+                variant="h4"
+                align="center"
+                width="100%"
+                sx={{ mr: 5 }}
+              >
+                Sign In
+              </Typography>
+            </Stack>
+            <TextField
+              {...formikTextFieldProps(formik, "email", "Email")}
+              helperText={formik.touched.email && formik.errors.email}
+            />
+            <TextField
+              {...formikTextFieldProps(formik, "password", "Password")}
+              helperText={formik.touched.password && formik.errors.password}
+              type="password"
+            />
+            {error && <Alert severity="error">{error}</Alert>}
+            <Stack direction="row" justifyContent="center">
+              <LoadingButton
+                variant="contained"
+                onClick={formik.submitForm}
+                loading={formik.isSubmitting}
+              >
+                Login
+              </LoadingButton>
+            </Stack>
 
-          <Stack direction="row" gap="1rem" justifyContent="center">
-            <Button
-              variant="text"
-              onClick={() => navigate("/create-account")}
-              sx={{ mx: 2 }}
-            >
-              Create Account
-            </Button>
+            <Stack direction="row" gap="1rem" justifyContent="center">
+              <Button
+                variant="text"
+                onClick={() => navigate("/create-account")}
+                sx={{ mx: 2 }}
+              >
+                Create Account
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
-      </CardContent>
-    </Container>
+        </CardContent>
+      </Card>
+    </Stack>
   );
 };

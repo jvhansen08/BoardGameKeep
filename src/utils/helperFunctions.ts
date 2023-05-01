@@ -1,5 +1,6 @@
 import { TextFieldProps } from "@mui/material";
 import { FormikValues, useFormik } from "formik";
+import { matchPath, useLocation } from "react-router-dom";
 
 // ================================
 // Rounding
@@ -40,4 +41,17 @@ export function formikTextFieldNumberProps<T extends FormikValues>(
     onChange: formik.handleChange,
     error: formik.touched[field] && !!formik.errors[field],
   };
+}
+
+
+export function useRouteMatch(patterns: string[]) {
+  const { pathname } = useLocation();
+  for (let i = 0; i < patterns.length; i += 1) {
+    const pattern = patterns[i];
+    const possibleMatch = matchPath(pattern, pathname);
+    if (possibleMatch !== null) {
+      return possibleMatch;
+    }
+  }
+  return null;
 }
