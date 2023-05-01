@@ -1,5 +1,5 @@
 import {
-    Alert,
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -17,16 +17,40 @@ import {
   formikTextFieldNumberProps,
   formikTextFieldProps,
 } from "../utils/helperFunctions";
-import { setDoc, doc, addDoc, collection } from "firebase/firestore";
-import { db } from "../lib/firebase";
+import { setDoc, doc, addDoc, collection, getDoc } from "firebase/firestore";
+import { auth, db } from "../lib/firebase";
 
 export const validationSchema = yup.object({
   title: yup.string().required("Name is required"),
-  minPlayers: yup.number().min(1, "Min players must be 1 or greater").max(yup.ref("maxPlayers"), "Min players must be less than or equal to max players").required("Min player count is required"),
-  maxPlayers: yup.number().min(1, "Max players must be 1 or greater").required("Max player count is required"),
-  minPlayTime: yup.number().min(1, "Min play time must be 1 or greater").max(yup.ref("maxPlayTime"), "Min play time must be less than or equal to max play time").required("Min play time is required"),
-  maxPlayTime: yup.number().min(1, "Max play time must be 1 or greater").required("Max play time is required"),
-  rating: yup.number().min(1, "Rating must be 1 or greater").max(10, "Rating must be 10 or less").required("Rating is required"),
+  minPlayers: yup
+    .number()
+    .min(1, "Min players must be 1 or greater")
+    .max(
+      yup.ref("maxPlayers"),
+      "Min players must be less than or equal to max players"
+    )
+    .required("Min player count is required"),
+  maxPlayers: yup
+    .number()
+    .min(1, "Max players must be 1 or greater")
+    .required("Max player count is required"),
+  minPlayTime: yup
+    .number()
+    .min(1, "Min play time must be 1 or greater")
+    .max(
+      yup.ref("maxPlayTime"),
+      "Min play time must be less than or equal to max play time"
+    )
+    .required("Min play time is required"),
+  maxPlayTime: yup
+    .number()
+    .min(1, "Max play time must be 1 or greater")
+    .required("Max play time is required"),
+  rating: yup
+    .number()
+    .min(1, "Rating must be 1 or greater")
+    .max(10, "Rating must be 10 or less")
+    .required("Rating is required"),
 });
 
 export interface AddBoardGameProps {
@@ -48,12 +72,20 @@ export const AddBoardGame: FC<AddBoardGameProps> = (props) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      addDoc(collection(db, "boardGames"), values).then(() => {
-        setRefreshTrigger(new Date());
-        setOpen(false);
-      }).catch((error) => {
-        setError(error.message);
-      });
+      if (!auth.currentUser) return;
+      const docRef = doc(db, "userCollection", auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        await setDoc(doc(db, "userCollection", auth.currentUser.uid), {
+          games: [...docSnap.data()?.games, values],
+        });
+      } else {
+        await setDoc(doc(db, "userCollection", auth.currentUser.uid), {
+          games: [values],
+        });
+      }
+      setRefreshTrigger(new Date());
+      setOpen(false);
     },
   });
 
@@ -63,9 +95,14 @@ export const AddBoardGame: FC<AddBoardGameProps> = (props) => {
 
   return (
     <>
-      <Button onClick={() =>{ 
-        formik.resetForm();
-        setOpen(true)}}>Add Board Game</Button>
+      <Button
+        onClick={() => {
+          formik.resetForm();
+          setOpen(true);
+        }}
+      >
+        Add Board Game
+      </Button>
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Add Board Game</DialogTitle>
         <IconButton
@@ -87,7 +124,10 @@ export const AddBoardGame: FC<AddBoardGameProps> = (props) => {
             spacing={4}
             width={400}
           >
-            <TextField {...formikTextFieldProps(formik, "title", "Title")} helperText={formik.errors.title} />
+            <TextField
+              {...formikTextFieldProps(formik, "title", "Title")}
+              helperText={formik.errors.title}
+            />
             <TextField
               {...formikTextFieldNumberProps(
                 formik,
@@ -102,7 +142,7 @@ export const AddBoardGame: FC<AddBoardGameProps> = (props) => {
                 "maxPlayers",
                 "Max Player Count"
               )}
-                helperText={formik.errors.maxPlayers}
+              helperText={formik.errors.maxPlayers}
             />
             <TextField
               {...formikTextFieldNumberProps(
@@ -110,7 +150,7 @@ export const AddBoardGame: FC<AddBoardGameProps> = (props) => {
                 "minPlayTime",
                 "Min Play Time"
               )}
-                helperText={formik.errors.minPlayTime}
+              helperText={formik.errors.minPlayTime}
             />
             <TextField
               {...formikTextFieldNumberProps(
@@ -118,11 +158,15 @@ export const AddBoardGame: FC<AddBoardGameProps> = (props) => {
                 "maxPlayTime",
                 "Max Play Time"
               )}
-                helperText={formik.errors.maxPlayTime}
+              helperText={formik.errors.maxPlayTime}
             />
             <TextField
               {...formikTextFieldNumberProps(formik, "rating", "Rating")}
-              helperText={formik.errors.rating ? formik.errors.rating : "Rating must be between 1 and 10"}
+              helperText={
+                formik.errors.rating
+                  ? formik.errors.rating
+                  : "Rating must be between 1 and 10"
+              }
             />
             {error && <Alert severity="error">{error}</Alert>}
           </Stack>

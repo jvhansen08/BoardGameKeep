@@ -17,8 +17,9 @@ import { formikTextFieldProps } from "../utils/helperFunctions";
 import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { auth, db } from "../lib/firebase";
 import { updateProfile } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 
 export const CreateAccount = () => {
   const navigate = useNavigate();
@@ -63,6 +64,10 @@ export const CreateAccount = () => {
         .then((userCredential) => {
           updateProfile(userCredential.user, {
             displayName: `${values.firstName} ${values.lastName}`,
+          });
+          addDoc(collection(db, "userCollection"), {
+            id: userCredential.user.uid,
+            games: [],
           });
           navigate("/");
         })
