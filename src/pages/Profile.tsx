@@ -58,8 +58,8 @@ export const Profile: FC = () => {
     <Stack justifyContent={"center"} alignItems={"center"} height={"90vh"}>
       <Card sx={{width:"40vw"}}>
         <CardContent>
-          <CardHeader title={"Profile"} />
           <Stack spacing={2}>
+            <Typography variant="h4">Profile</Typography>
           <Typography variant={"h5"}>Name</Typography>
           <TextField value={name} onChange={(e) => setName(e.target.value)}/>
           <Button disabled={name === user?.displayName || name === ""} onClick={handleUpdateName}>Update Name</Button>
