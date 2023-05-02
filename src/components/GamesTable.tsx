@@ -137,7 +137,13 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-function EnhancedTableToolbar() {
+const getRandomGame = (games: Boardgame[]) => {
+  const randomIndex = Math.floor(Math.random() * games.length);
+  console.log(games[randomIndex]);
+  return games[randomIndex];
+};
+
+function EnhancedTableToolbar({ games }: { games: Boardgame[] }) {
   return (
     <Toolbar
       sx={{
@@ -155,11 +161,11 @@ function EnhancedTableToolbar() {
       </Typography>
       <Button
         sx={{
-          mt: 1,
           minWidth: "fit-content",
         }}
         variant="contained"
         endIcon={<Casino />}
+        onClick={() => getRandomGame(games)}
       >
         Random Game
       </Button>
@@ -208,7 +214,7 @@ export default function GamesTable({ games }: { games: Boardgame[] }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar />
+        <EnhancedTableToolbar games={games} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} size={dense ? "small" : "medium"}>
             <EnhancedTableHead
@@ -219,8 +225,8 @@ export default function GamesTable({ games }: { games: Boardgame[] }) {
             <TableBody>
               {visibleGames.map((game, index) => {
                 return (
-                  <TableRow>
-                    <TableCell component="th" id={index.toString()} scope="row">
+                  <TableRow key={index}>
+                    <TableCell component="th" scope="row">
                       {game.title}
                     </TableCell>
                     <TableCell align="right">{game.minPlayers}</TableCell>
