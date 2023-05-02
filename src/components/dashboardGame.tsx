@@ -232,18 +232,29 @@ import { Boardgame } from "../types/types";
         </Dialog>
 
         <Dialog open={deleteOpen} onClose={() => setDeleteOpen(false)}>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                Are you sure you want to delete this game?
-            </Typography>
-            <DialogActions>
-            <Button onClick={() => setDeleteOpen(false)}>Cancel</Button>
-            <Button onClick={() => {
-                deleteGame(props.index)
-                setDeleteOpen(false);
-                }}>Delete</Button>
-          </DialogActions>
+            <Stack
+                justifyContent={"center"}
+                alignItems={"center"}
+                spacing={4}
+                width={400}
+            >
+                <Typography sx={{ fontSize: 18 }} color="text.secondary" padding={'15px'}>
+                    Are you sure you want to delete this game?
+                </Typography>
+                <DialogActions>
+                <Button onClick={() => setDeleteOpen(false)}>Cancel</Button>
+                <Button 
+                    sx={{ color: (theme) => theme.palette.error.main }}
+                    onClick={() => {
+                        deleteGame(props.index)
+                        setDeleteOpen(false);
+                        }}
+                >
+                    Delete
+                </Button>
+                </DialogActions>
+            </Stack>
         </Dialog>
       </>
     );
   };
-  
