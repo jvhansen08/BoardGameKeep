@@ -11,10 +11,9 @@ import {
     Card,
     Typography,
   } from "@mui/material";
-  import React, { FC, useState } from "react";
+  import { FC, useState } from "react";
   import CloseIcon from "@mui/icons-material/Close";
   import { useFormik } from "formik";
-  import AddIcon from "@mui/icons-material/Add";
   import * as yup from "yup";
   import {
     formikTextFieldNumberProps,
@@ -67,7 +66,7 @@ import { Boardgame } from "../types/types";
     const { setRefreshTrigger } = props;
     const [updateOpen, setUpdateOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
-    const [error, setError] = useState("");
+    const [error] = useState("");
     const updateFormik = useFormik({
       initialValues: {
         title: props.game.title,

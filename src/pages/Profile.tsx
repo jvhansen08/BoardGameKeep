@@ -1,8 +1,7 @@
-import { Alert, Button, Card, CardContent, CardHeader, Stack, TextField, Typography } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
+import { Alert, Button, Card, CardContent, Stack, TextField, Typography } from "@mui/material";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../lib/firebase";
-import { formikTextFieldProps } from "../utils/helperFunctions";
 import { updateEmail, updatePassword, updateProfile } from "firebase/auth";
 
 export const Profile: FC = () => {

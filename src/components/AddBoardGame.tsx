@@ -9,7 +9,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
@@ -18,7 +18,7 @@ import {
   formikTextFieldNumberProps,
   formikTextFieldProps,
 } from "../utils/helperFunctions";
-import { setDoc, doc, addDoc, collection, getDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
 
 export const validationSchema = yup.object({
@@ -61,7 +61,7 @@ export interface AddBoardGameProps {
 export const AddBoardGame: FC<AddBoardGameProps> = (props) => {
   const { setRefreshTrigger } = props;
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState("");
+  const [error] = useState("");
   const formik = useFormik({
     initialValues: {
       title: "",

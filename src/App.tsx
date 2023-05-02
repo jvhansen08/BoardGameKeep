@@ -1,9 +1,7 @@
-import { useEffect } from "react";
 import { CreateAccount } from "./pages/CreateAccount";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { MyGames } from "./pages/MyGames";
-import AppHeader from "./components/AppHeader";
 import { Root } from "./pages/Root";
 import { NearbyStores } from "./pages/NearbyStores";
 import { PickGame } from "./pages/PickGame";
