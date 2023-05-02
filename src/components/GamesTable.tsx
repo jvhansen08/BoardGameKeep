@@ -137,13 +137,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-const getRandomGame = (games: Boardgame[]) => {
-  const randomIndex = Math.floor(Math.random() * games.length);
-  console.log(games[randomIndex]);
-  return games[randomIndex];
-};
-
-function EnhancedTableToolbar({ games }: { games: Boardgame[] }) {
+function EnhancedTableToolbar({
+  setOpenGameFinder,
+}: {
+  setOpenGameFinder: (open: boolean) => void;
+}) {
   return (
     <Toolbar
       sx={{
@@ -165,15 +163,21 @@ function EnhancedTableToolbar({ games }: { games: Boardgame[] }) {
         }}
         variant="contained"
         endIcon={<Casino />}
-        onClick={() => getRandomGame(games)}
+        onClick={() => setOpenGameFinder(true)}
       >
-        Random Game
+        Game Finder
       </Button>
     </Toolbar>
   );
 }
 
-export default function GamesTable({ games }: { games: Boardgame[] }) {
+export default function GamesTable({
+  games,
+  setOpenGameFinder,
+}: {
+  games: Boardgame[];
+  setOpenGameFinder: (open: boolean) => void;
+}) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [dense, setDense] = useState(false);
@@ -214,7 +218,7 @@ export default function GamesTable({ games }: { games: Boardgame[] }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar games={games} />
+        <EnhancedTableToolbar setOpenGameFinder={setOpenGameFinder} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} size={dense ? "small" : "medium"}>
             <EnhancedTableHead

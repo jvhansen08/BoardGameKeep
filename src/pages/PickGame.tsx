@@ -12,6 +12,7 @@ import { auth, db } from "../lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { Boardgame } from "../types/types";
 import GamesTable from "../components/GamesTable";
+import GameFinder from "../components/GameFinder";
 
 export const PickGame: FC = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export const PickGame: FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [games, setGames] = useState<Boardgame[]>([]);
+  const [openGameFinder, setOpenGameFinder] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -53,7 +55,7 @@ export const PickGame: FC = () => {
   }, [user]);
 
   return (
-    <Stack mt="4em" alignItems={"center"} height={"90vh"}>
+    <Stack mt="2em" alignItems={"center"} height={"90vh"}>
       {loading && <CircularProgress />}
       {error && <Typography>Something went wrong</Typography>}
       {games.length === 0 && !loading && !error && (
@@ -68,7 +70,11 @@ export const PickGame: FC = () => {
               mt: 5,
             }}
           >
-            <GamesTable games={games} />
+            {openGameFinder ? (
+              <GameFinder games={games} />
+            ) : (
+              <GamesTable games={games} setOpenGameFinder={setOpenGameFinder} />
+            )}
           </Container>
         </>
       )}
