@@ -3,7 +3,7 @@ import { auth, db } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { DashboardGame } from "../components/dashboardGame";
-import { CircularProgress, Stack, Typography } from "@mui/material";
+import { Alert, CircularProgress, Stack, Typography } from "@mui/material";
 import { AddBoardGame } from "../components/AddBoardGame";
 import { doc, getDoc } from "firebase/firestore";
 import { Boardgame } from "../types/types";
@@ -53,7 +53,7 @@ export const MyGames: FC = () => {
       {loading && <CircularProgress />}
       {error && <Typography>Something went wrong</Typography>}
       {games.length === 0 && !loading && !error && (
-        <Typography variant="h4">No games found</Typography>
+        <Alert severity="info">No games found</Alert>
       )}
       <Box
         sx={{
