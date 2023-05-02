@@ -2,9 +2,10 @@ import { FC, useEffect, useState } from "react";
 import { auth, db } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { DashboardGame } from "../components/dashboardGame";
+// import { DashboardGame } from "../components/dashboardGame";
 import { CircularProgress, Stack, Typography } from "@mui/material";
 import { AddBoardGame } from "../components/AddBoardGame";
+import { UpdateBoardGame } from "../components/dashboardGame";
 import { doc, getDoc } from "firebase/firestore";
 import { Boardgame } from "../types/types";
 
@@ -50,6 +51,7 @@ export const MyGames: FC = () => {
       });
   }, [refreshTrigger, user]);
 
+
   return (
     <Stack alignItems={"center"} justifyContent={"center"} sx={{ mt: 10 }}>
       {loading && <CircularProgress />}
@@ -70,7 +72,7 @@ export const MyGames: FC = () => {
       >
         {games.map((game, index) => (
           <div key={index} style={{ padding: "15px" }}>
-            <DashboardGame {...game} />
+            <UpdateBoardGame setRefreshTrigger={setRefreshTrigger} game={game} index={index}/>
           </div>
         ))}
       </Box>
