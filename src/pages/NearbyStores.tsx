@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../lib/firebase";
 

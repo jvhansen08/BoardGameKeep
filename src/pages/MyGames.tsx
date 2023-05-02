@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { auth, db } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-// import { DashboardGame } from "../components/dashboardGame";
 import { CircularProgress, Stack, Typography } from "@mui/material";
 import { AddBoardGame } from "../components/AddBoardGame";
 import { UpdateBoardGame } from "../components/dashboardGame";

@@ -1,4 +1,3 @@
-import { useTheme } from "@mui/material/styles";
 import { Button, Typography } from "@material-ui/core";
 import { Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
