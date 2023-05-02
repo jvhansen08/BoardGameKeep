@@ -20,7 +20,7 @@ import {
     formikTextFieldNumberProps,
     formikTextFieldProps,
   } from "../utils/helperFunctions";
-  import { setDoc, doc, addDoc, collection, getDoc } from "firebase/firestore";
+  import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
   import { auth, db } from "../lib/firebase";
 import { Boardgame } from "../types/types";
   
@@ -60,8 +60,9 @@ import { Boardgame } from "../types/types";
   export interface AddBoardGameProps {
     setRefreshTrigger: (date: Date) => void;
     game: Boardgame;
+    index: number;
   }
-  
+
   export const UpdateBoardGame: FC<AddBoardGameProps> = (props) => {
     const { setRefreshTrigger } = props;
     const [open, setOpen] = useState(false);
@@ -81,9 +82,18 @@ import { Boardgame } from "../types/types";
         const docRef = doc(db, "userCollection", auth.currentUser.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          await setDoc(doc(db, "userCollection", auth.currentUser.uid), {
-            games: [...docSnap.data()?.games, values],
-          });
+            const games = docSnap.data()?.games;
+            games[props.index] = values;
+            formik.initialValues.title = values.title;
+            formik.initialValues.minPlayers = values.minPlayers;
+            formik.initialValues.maxPlayers = values.maxPlayers;
+            formik.initialValues.minPlayTime = values.minPlayTime;
+            formik.initialValues.maxPlayTime = values.maxPlayTime;
+            formik.initialValues.rating = values.rating;
+            
+            await updateDoc(doc(db, "userCollection", auth.currentUser.uid), {
+                games: games,
+            });
         } else {
           await setDoc(doc(db, "userCollection", auth.currentUser.uid), {
             games: [values],

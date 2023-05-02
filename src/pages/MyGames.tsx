@@ -51,19 +51,6 @@ export const MyGames: FC = () => {
       });
   }, [refreshTrigger, user]);
 
-  // const updateGame = (game: Boardgame) => {
-  //   const docRef = doc(db, "userCollection", user!.uid);
-  //   getDoc(docRef)
-  //     .then((doc) => {
-  //       if (doc.exists()) {
-  //         const data = doc.data();
-  //         if (data && data.games && data.games[game.id]) {
-  //           data.games[game.id] = game;
-  //           setGames(data.games);
-  //         }
-  //       }
-  //     });
-  // }
 
   return (
     <Stack alignItems={"center"} justifyContent={"center"} sx={{ mt: 10 }}>
@@ -85,8 +72,7 @@ export const MyGames: FC = () => {
       >
         {games.map((game, index) => (
           <div key={index} style={{ padding: "15px" }}>
-
-            <UpdateBoardGame setRefreshTrigger={setRefreshTrigger} game={game}/>
+            <UpdateBoardGame setRefreshTrigger={setRefreshTrigger} game={game} index={index}/>
           </div>
         ))}
       </Box>
