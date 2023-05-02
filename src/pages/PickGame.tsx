@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   CircularProgress,
   Container,
   Stack,
@@ -71,7 +70,7 @@ export const PickGame: FC = () => {
             }}
           >
             {openGameFinder ? (
-              <GameFinder games={games} />
+              <GameFinder games={games} setOpenGameFinder={setOpenGameFinder} />
             ) : (
               <GamesTable games={games} setOpenGameFinder={setOpenGameFinder} />
             )}
