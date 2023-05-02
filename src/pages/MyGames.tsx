@@ -38,8 +38,6 @@ export const MyGames: FC = () => {
           if (data) {
             setGames(data.games);
           }
-        } else {
-          setError(true);
         }
       })
       .catch(() => {
@@ -74,7 +72,7 @@ export const MyGames: FC = () => {
           </div>
         ))}
       </Box>
-      <Stack sx={{mt:4}} direction="row">
+      <Stack sx={{ mt: 4 }} direction="row">
         <AddBoardGame setRefreshTrigger={setRefreshTrigger} />
       </Stack>
     </Stack>
