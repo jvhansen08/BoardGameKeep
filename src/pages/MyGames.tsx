@@ -2,9 +2,10 @@ import { FC, useEffect, useState } from "react";
 import { auth, db } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { DashboardGame } from "../components/dashboardGame";
+// import { DashboardGame } from "../components/dashboardGame";
 import { CircularProgress, Stack, Typography } from "@mui/material";
 import { AddBoardGame } from "../components/AddBoardGame";
+import { UpdateBoardGame } from "../components/dashboardGame";
 import { doc, getDoc } from "firebase/firestore";
 import { Boardgame } from "../types/types";
 
@@ -50,6 +51,20 @@ export const MyGames: FC = () => {
       });
   }, [refreshTrigger, user]);
 
+  // const updateGame = (game: Boardgame) => {
+  //   const docRef = doc(db, "userCollection", user!.uid);
+  //   getDoc(docRef)
+  //     .then((doc) => {
+  //       if (doc.exists()) {
+  //         const data = doc.data();
+  //         if (data && data.games && data.games[game.id]) {
+  //           data.games[game.id] = game;
+  //           setGames(data.games);
+  //         }
+  //       }
+  //     });
+  // }
+
   return (
     <Stack alignItems={"center"} justifyContent={"center"} sx={{ mt: 10 }}>
       {loading && <CircularProgress />}
@@ -70,7 +85,8 @@ export const MyGames: FC = () => {
       >
         {games.map((game, index) => (
           <div key={index} style={{ padding: "15px" }}>
-            <DashboardGame {...game} />
+
+            <UpdateBoardGame setRefreshTrigger={setRefreshTrigger} game={game}/>
           </div>
         ))}
       </Box>
