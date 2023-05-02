@@ -59,7 +59,7 @@ export const MyGames: FC = () => {
         sx={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "beginning",
+          justifyContent: "space-between",
           flexWrap: "wrap",
           width: 3 / 4,
           maxHeight: 1 / 2,
