@@ -8,6 +8,7 @@ import {
     Typography,
     Dialog,
     IconButton,
+    Alert,
 } from '@mui/material'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -23,9 +24,9 @@ export interface UpdateBoardgameProps {
 
 
 export const UpdateBoardgame: FC<UpdateBoardgameProps> = (props) => {
-    const { open, setOpen, updateBoardgame } = props
+    const { open, setOpen } = props
     const [error, setError] = useState<string | null>(null)
-    const [game, setGame] = useState<Boardgame>({} as Boardgame)
+    const [game] = useState<Boardgame>({} as Boardgame)
 
     useEffect(() => {
         return;
@@ -45,7 +46,7 @@ export const UpdateBoardgame: FC<UpdateBoardgameProps> = (props) => {
             species: yup.string(),
             sex: yup.string(),
         }),
-        onSubmit: (values, { setSubmitting }) => {
+        onSubmit: () => {
             setError(null)
             //Post to firebase
         },
@@ -110,6 +111,11 @@ export const UpdateBoardgame: FC<UpdateBoardgameProps> = (props) => {
                                 formik.touched.rating && formik.errors.rating
                             }
                         />
+                        {error && (
+                            <Alert severity='error' sx={{ mt: 2 }}>
+                                {error}
+                            </Alert>
+                        )}
                     </Stack>
                     <Stack
                         direction='row'

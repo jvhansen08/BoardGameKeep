@@ -1,7 +1,7 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Button, IconButton, Popover } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RouterTabs } from "./RouterTabs";
 import { auth } from "../lib/firebase";

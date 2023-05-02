@@ -14,3 +14,10 @@ export enum AuthPaths {
     NearbyStores = '/nearby-stores',
     Profile = '/profile',
 }
+
+export type StoreData = {
+    name: string;
+    address: string;
+    rating: number;
+    numRatings: number;
+}

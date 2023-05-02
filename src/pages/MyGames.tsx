@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { DashboardGame } from "../components/dashboardGame";
 import { Alert, CircularProgress, Stack, Typography } from "@mui/material";
 import { AddBoardGame } from "../components/AddBoardGame";
+import { UpdateBoardGame } from "../components/dashboardGame";
 import { doc, getDoc } from "firebase/firestore";
 import { Boardgame } from "../types/types";
 
@@ -47,6 +48,7 @@ export const MyGames: FC = () => {
         setLoading(false);
       });
   }, [refreshTrigger, user]);
+
 
   return (
     <Stack alignItems="center" justifyContent="center" sx={{ mt: 10 }}>
