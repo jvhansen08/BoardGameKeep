@@ -202,8 +202,8 @@ export default function GamesTable({ games }: { games: Boardgame[] }) {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - games.length) : 0;
 
   const visibleGames = games
-    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .sort(getComparator(order, orderBy));
+    .sort(getComparator(order, orderBy))
+    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <Box sx={{ width: "100%" }}>
