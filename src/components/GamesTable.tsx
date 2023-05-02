@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Boardgame } from "../types/types";
 import {
   Box,
+  Button,
   FormControlLabel,
   Paper,
   Switch,
@@ -13,10 +14,37 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Toolbar,
+  Typography,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
+import { Casino } from "@mui/icons-material";
 
 type Order = "asc" | "desc";
+
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function getComparator<Key extends keyof Boardgame>(
+  order: Order,
+  orderBy: Key
+): (
+  a: { [key in Key]: number | string },
+  b: { [key in Key]: number | string }
+) => number {
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
 
 interface HeadCell {
   disablePadding: boolean;
@@ -109,6 +137,36 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
+function EnhancedTableToolbar() {
+  return (
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+      }}
+    >
+      <Typography
+        sx={{ flex: "1 1 100%" }}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        Your Games
+      </Typography>
+      <Button
+        sx={{
+          mt: 1,
+          minWidth: "fit-content",
+        }}
+        variant="contained"
+        endIcon={<Casino />}
+      >
+        Random Game
+      </Button>
+    </Toolbar>
+  );
+}
+
 export default function GamesTable({ games }: { games: Boardgame[] }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -117,7 +175,7 @@ export default function GamesTable({ games }: { games: Boardgame[] }) {
   const [orderBy, setOrderBy] = useState<keyof Boardgame>("title");
 
   const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
+    _event: React.MouseEvent<unknown>,
     property: keyof Boardgame
   ) => {
     const isAsc = orderBy === property && order === "asc";
@@ -143,16 +201,14 @@ export default function GamesTable({ games }: { games: Boardgame[] }) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - games.length) : 0;
 
-  const visibleGames = games.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
-
-  console.log(visibleGames);
+  const visibleGames = games
+    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    .sort(getComparator(order, orderBy));
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
+        <EnhancedTableToolbar />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} size={dense ? "small" : "medium"}>
             <EnhancedTableHead

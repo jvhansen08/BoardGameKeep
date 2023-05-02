@@ -49,7 +49,7 @@ export const MyGames: FC = () => {
   }, [refreshTrigger, user]);
 
   return (
-    <Stack alignItems={"center"} justifyContent={"center"} sx={{ mt: 10 }}>
+    <Stack alignItems="center" justifyContent="center" sx={{ mt: 10 }}>
       {loading && <CircularProgress />}
       {error && <Typography>Something went wrong</Typography>}
       {games.length === 0 && !loading && !error && (
@@ -58,18 +58,22 @@ export const MyGames: FC = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "center",
           flexWrap: "wrap",
-          width: 3 / 4,
-          maxHeight: 1 / 2,
-          overflowY: "auto",
+          gap: "15px",
+          width: "75%",
+          maxHeight: "50%",
         }}
       >
         {games.map((game, index) => (
-          <div key={index} style={{ padding: "15px" }}>
+          <Box
+            key={index}
+            sx={{
+              justifyContent: "start",
+            }}
+          >
             <DashboardGame {...game} />
-          </div>
+          </Box>
         ))}
       </Box>
       <Stack sx={{ mt: 4 }} direction="row">
