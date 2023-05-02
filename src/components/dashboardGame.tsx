@@ -65,9 +65,10 @@ import { Boardgame } from "../types/types";
 
   export const UpdateBoardGame: FC<AddBoardGameProps> = (props) => {
     const { setRefreshTrigger } = props;
-    const [open, setOpen] = useState(false);
+    const [updateOpen, setUpdateOpen] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
     const [error, setError] = useState("");
-    const formik = useFormik({
+    const updateFormik = useFormik({
       initialValues: {
         title: props.game.title,
         minPlayers: props.game.minPlayers,
@@ -84,12 +85,12 @@ import { Boardgame } from "../types/types";
         if (docSnap.exists()) {
             const games = docSnap.data()?.games;
             games[props.index] = values;
-            formik.initialValues.title = values.title;
-            formik.initialValues.minPlayers = values.minPlayers;
-            formik.initialValues.maxPlayers = values.maxPlayers;
-            formik.initialValues.minPlayTime = values.minPlayTime;
-            formik.initialValues.maxPlayTime = values.maxPlayTime;
-            formik.initialValues.rating = values.rating;
+            updateFormik.initialValues.title = values.title;
+            updateFormik.initialValues.minPlayers = values.minPlayers;
+            updateFormik.initialValues.maxPlayers = values.maxPlayers;
+            updateFormik.initialValues.minPlayTime = values.minPlayTime;
+            updateFormik.initialValues.maxPlayTime = values.maxPlayTime;
+            updateFormik.initialValues.rating = values.rating;
             
             await updateDoc(doc(db, "userCollection", auth.currentUser.uid), {
                 games: games,
@@ -100,17 +101,31 @@ import { Boardgame } from "../types/types";
           });
         }
         setRefreshTrigger(new Date());
-        setOpen(false);
+        setUpdateOpen(false);
       },
     });
   
     const onClose = () => {
-      setOpen(false);
+      setUpdateOpen(false);
     };
+
+    const deleteGame = async (index: number) => {
+        if (!auth.currentUser) return;
+        const docRef = doc(db, "userCollection", auth.currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const games = docSnap.data()?.games;
+            games.splice(index, 1);
+            await updateDoc(doc(db, "userCollection", auth.currentUser.uid), {
+                games: games,
+            });
+        }
+        setRefreshTrigger(new Date());
+      }
   
     return (
       <>
-        <Card sx={{ maxWidth: 225, minWidth: 225, padding: 3, minHeight:200, maxHeight:200}}>
+        <Card sx={{ maxWidth: 225, minWidth: 225, padding: 3, minHeight:180}}>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 Game
             </Typography>
@@ -126,18 +141,24 @@ import { Boardgame } from "../types/types";
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 Rating: {props.game.rating}
             </Typography>
+            <Button 
+            onClick={() => {
+                setDeleteOpen(true);
+            }}
+            >
+                Delete
+            </Button>
             <Button
             onClick={() => {
-                formik.resetForm();
-                setOpen(true);
+                updateFormik.resetForm();
+                setUpdateOpen(true);
             }}
-            variant="contained"
             >
-            Update Board Game
+                Update
             </Button>
         </Card>
-        <Dialog open={open} onClose={() => setOpen(false)}>
-          <DialogTitle>Add Board Game</DialogTitle>
+        <Dialog open={updateOpen} onClose={() => setUpdateOpen(false)}>
+          <DialogTitle>Update Board Game</DialogTitle>
           <IconButton
             aria-label="close"
             onClick={onClose}
@@ -158,46 +179,46 @@ import { Boardgame } from "../types/types";
               width={400}
             >
               <TextField
-                {...formikTextFieldProps(formik, "title", "Title")}
-                helperText={formik.errors.title}
+                {...formikTextFieldProps(updateFormik, "title", "Title")}
+                helperText={updateFormik.errors.title}
               />
               <TextField
                 {...formikTextFieldNumberProps(
-                  formik,
+                  updateFormik,
                   "minPlayers",
                   "Min Player Count"
                 )}
-                helperText={formik.errors.minPlayers}
+                helperText={updateFormik.errors.minPlayers}
               />
               <TextField
                 {...formikTextFieldNumberProps(
-                  formik,
+                  updateFormik,
                   "maxPlayers",
                   "Max Player Count"
                 )}
-                helperText={formik.errors.maxPlayers}
+                helperText={updateFormik.errors.maxPlayers}
               />
               <TextField
                 {...formikTextFieldNumberProps(
-                  formik,
+                  updateFormik,
                   "minPlayTime",
                   "Min Play Time"
                 )}
-                helperText={formik.errors.minPlayTime}
+                helperText={updateFormik.errors.minPlayTime}
               />
               <TextField
                 {...formikTextFieldNumberProps(
-                  formik,
+                  updateFormik,
                   "maxPlayTime",
                   "Max Play Time"
                 )}
-                helperText={formik.errors.maxPlayTime}
+                helperText={updateFormik.errors.maxPlayTime}
               />
               <TextField
-                {...formikTextFieldNumberProps(formik, "rating", "Rating")}
+                {...formikTextFieldNumberProps(updateFormik, "rating", "Rating")}
                 helperText={
-                  formik.errors.rating
-                    ? formik.errors.rating
+                  updateFormik.errors.rating
+                    ? updateFormik.errors.rating
                     : "Rating must be between 1 and 10"
                 }
               />
@@ -205,8 +226,21 @@ import { Boardgame } from "../types/types";
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-            <Button onClick={() => formik.handleSubmit()}>Update</Button>
+            <Button onClick={() => setUpdateOpen(false)}>Cancel</Button>
+            <Button onClick={() => updateFormik.handleSubmit()}>Update</Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={deleteOpen} onClose={() => setDeleteOpen(false)}>
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Are you sure you want to delete this game?
+            </Typography>
+            <DialogActions>
+            <Button onClick={() => setDeleteOpen(false)}>Cancel</Button>
+            <Button onClick={() => {
+                deleteGame(props.index)
+                setDeleteOpen(false);
+                }}>Delete</Button>
           </DialogActions>
         </Dialog>
       </>
