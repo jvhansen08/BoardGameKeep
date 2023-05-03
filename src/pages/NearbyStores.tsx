@@ -91,7 +91,6 @@ export const NearbyStores: FC = () => {
 
   return (
     <Stack alignItems={"center"} height={"90vh"}>
-      <Typography variant="h4" style={{ margin: "16px"}}>Nearby Stores</Typography>
       {(!storesLoaded || !locationLoaded) && <CircularProgress />}
       {error && (
         <Typography>
