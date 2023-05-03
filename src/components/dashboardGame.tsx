@@ -80,25 +80,26 @@ export function DashboardGame(game: gameProps) {
   return (
     <Card
       sx={{
-        maxWidth: 225,
-        minWidth: 225,
+        maxWidth: 300,
+        minWidth: 300,
         padding: 3,
         minHeight: 160,
         maxHeight: 160,
       }}
     >
-      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        Game
-      </Typography>
-      <Typography variant="h5" component="div">
-        {game.title}
-      </Typography>
-      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        Players: {game.minPlayers}-{game.maxPlayers}
-      </Typography>
-      <Typography>
-        Time: {game.minPlayTime}-{game.maxPlayTime}
-      </Typography>
+      <CardHeader title={game.title} />
+      <Divider />
+      <CardContent>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Players: {game.minPlayers}-{game.maxPlayers}
+        </Typography>
+        <Typography>
+          Time: {game.minPlayTime}-{game.maxPlayTime}
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Rating: {game.rating}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }
