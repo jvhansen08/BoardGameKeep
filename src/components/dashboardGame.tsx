@@ -10,6 +10,9 @@ import {
   TextField,
   Card,
   Typography,
+  CardHeader,
+  CardContent,
+  Divider,
 } from "@mui/material";
 import { FC, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -22,6 +25,7 @@ import {
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
 import { Boardgame } from "../types/types";
+import { Delete, Edit } from "@mui/icons-material";
 
 export const validationSchema = yup.object({
   title: yup.string().required("Name is required"),
@@ -161,37 +165,41 @@ export const UpdateBoardGame: FC<AddBoardGameProps> = (props) => {
 
   return (
     <>
-      <Card sx={{ maxWidth: 225, minWidth: 225, padding: 3, minHeight: 180 }}>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Game
-        </Typography>
-        <Typography variant="h5" component="div">
-          {props.game.title}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Players: {props.game.minPlayers}-{props.game.maxPlayers}
-        </Typography>
-        <Typography>
-          Time: {props.game.minPlayTime}-{props.game.maxPlayTime}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Rating: {props.game.rating}
-        </Typography>
-        <Button
-          onClick={() => {
-            setDeleteOpen(true);
-          }}
-        >
-          Delete
-        </Button>
-        <Button
-          onClick={() => {
-            updateFormik.resetForm();
-            setUpdateOpen(true);
-          }}
-        >
-          Update
-        </Button>
+      <Card sx={{ maxWidth: 300, minWidth: 300, padding: 3, minHeight: 180 }}>
+        <CardHeader
+          title={props.game.title}
+          action={
+            <>
+              <IconButton
+                onClick={() => {
+                  setDeleteOpen(true);
+                }}
+              >
+                <Delete color="error" />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  updateFormik.resetForm();
+                  setUpdateOpen(true);
+                }}
+              >
+                <Edit color="primary" />
+              </IconButton>
+            </>
+          }
+        />
+        <Divider />
+        <CardContent>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Players: {props.game.minPlayers}-{props.game.maxPlayers}
+          </Typography>
+          <Typography>
+            Time: {props.game.minPlayTime}-{props.game.maxPlayTime}
+          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Rating: {props.game.rating}
+          </Typography>
+        </CardContent>
       </Card>
       <Dialog open={updateOpen} onClose={() => setUpdateOpen(false)}>
         <DialogTitle>Update Board Game</DialogTitle>
