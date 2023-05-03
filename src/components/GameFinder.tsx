@@ -19,9 +19,9 @@ import { Close } from "@mui/icons-material";
 import { DashboardGame } from "./dashboardGame";
 
 const validationSchema = yup.object({
-  numPlayers: yup.number().min(1, "Must be 1 or greater"),
-  playTime: yup.number().min(1, "Must be 1 or greater"),
-  rating: yup.number().min(0, "Must be 0 or greater"),
+  numPlayers: yup.number().min(1, "Must be 1 or greater").nullable(),
+  playTime: yup.number().min(1, "Must be 1 or greater").nullable(),
+  rating: yup.number().min(0, "Must be 0 or greater").nullable(),
 });
 
 const getRandomGameFromCriteria = (
@@ -64,9 +64,9 @@ export default function GameFinder({
 
   const formik = useFormik({
     initialValues: {
-      numPlayers: 4,
-      playTime: 60,
-      rating: 7,
+      numPlayers: null,
+      playTime: null,
+      rating: null,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
