@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { auth, db } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { DashboardGame } from "../components/dashboardGame";
 import { Alert, CircularProgress, Stack, Typography } from "@mui/material";
 import { AddBoardGame } from "../components/AddBoardGame";
 import { UpdateBoardGame } from "../components/dashboardGame";
@@ -49,7 +48,6 @@ export const MyGames: FC = () => {
       });
   }, [refreshTrigger, user]);
 
-
   return (
     <Stack alignItems="center" justifyContent="center" sx={{ mt: 10 }}>
       {loading && <CircularProgress />}
@@ -74,7 +72,11 @@ export const MyGames: FC = () => {
               justifyContent: "start",
             }}
           >
-            <DashboardGame {...game} />
+            <UpdateBoardGame
+              game={game}
+              index={index}
+              setRefreshTrigger={setRefreshTrigger}
+            />
           </Box>
         ))}
       </Box>
