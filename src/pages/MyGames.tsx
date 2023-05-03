@@ -49,7 +49,7 @@ export const MyGames: FC = () => {
   }, [refreshTrigger, user]);
 
   return (
-    <Stack alignItems="center" justifyContent="center" sx={{ mt: 10 }}>
+    <Stack mt="2em" alignItems="center" justifyContent="center">
       {loading && <CircularProgress />}
       {error && <Typography>Something went wrong</Typography>}
       {games.length === 0 && !loading && !error && (

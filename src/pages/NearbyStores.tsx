@@ -38,43 +38,42 @@ export const NearbyStores: FC = () => {
     //     setStoresLoaded(true)
     //     console.log(error)
     // })
-    
+
     // this section is for testing purposes only to avoid hitting the API limit
     console.log("lat: " + lat);
     console.log("lon: " + lon);
-    setStoresLoaded(true)
+    setStoresLoaded(true);
     setStores([
-        {
-            name: "Board Game Barrister - Greenfield",
-            address: "6120 W Layton Ave, Greenfield, WI 53220",
-            rating: 4.5,
-            numRatings: 139,
-        },
-        {
-            name: "Board Game Barrister - Mayfair",
-            address: "2500 N Mayfair Rd, Wauwatosa, WI 53226",
-            rating: 3.7,
-            numRatings: 240,
-        },
-        {
-            name: "Board Game Barrister - Bayshore",
-            address: "5800 N Bayshore Dr, Glendale, WI 53217",
-            rating: 4.8,
-            numRatings: 124,
-        },
-        {
-            name: "Game Universe - Franklin",
-            address: "6550 S Lovers Ln, Franklin, WI 53132",
-            rating: 2.6,
-            numRatings: 49,
-        },
-    ])
-
+      {
+        name: "Board Game Barrister - Greenfield",
+        address: "6120 W Layton Ave, Greenfield, WI 53220",
+        rating: 4.5,
+        numRatings: 139,
+      },
+      {
+        name: "Board Game Barrister - Mayfair",
+        address: "2500 N Mayfair Rd, Wauwatosa, WI 53226",
+        rating: 3.7,
+        numRatings: 240,
+      },
+      {
+        name: "Board Game Barrister - Bayshore",
+        address: "5800 N Bayshore Dr, Glendale, WI 53217",
+        rating: 4.8,
+        numRatings: 124,
+      },
+      {
+        name: "Game Universe - Franklin",
+        address: "6550 S Lovers Ln, Franklin, WI 53132",
+        rating: 2.6,
+        numRatings: 49,
+      },
+    ]);
   }
 
   useEffect(() => {
     console.log("getting location");
-    
+
     navigator.geolocation.getCurrentPosition(
       (location) => {
         setLocationLoaded(true);
@@ -90,17 +89,15 @@ export const NearbyStores: FC = () => {
   }, []);
 
   return (
-    <Stack alignItems={"center"} height={"90vh"} sx={{mt:15}}>
+    <Stack mt="2em" alignItems={"center"} height={"90vh"}>
       {(!storesLoaded || !locationLoaded) && <CircularProgress />}
-      {error && (
-        <Typography>
-          Something went wrong.
-        </Typography>
+      {error && <Typography>Something went wrong.</Typography>}
+      {stores.length === 0 && storesLoaded && (
+        <Typography>No stores found.</Typography>
       )}
-      {stores.length === 0 && storesLoaded && <Typography>No stores found.</Typography>}
       <Stack spacing={2} width={"100%"} maxWidth={"640px"}>
         {stores.map((store, index) => (
-            <Card key={index} style={{ padding: "16px" }}>
+          <Card key={index} style={{ padding: "16px" }}>
             <Typography variant="h5">{store.name}</Typography>
             <Typography variant="body1">{store.address}</Typography>
             <Typography variant="body1">
