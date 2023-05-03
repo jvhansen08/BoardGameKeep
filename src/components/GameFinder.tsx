@@ -30,10 +30,19 @@ const getRandomGameFromCriteria = (
   setRandomGame: (game: Boardgame | null) => void
 ) => {
   const filteredGames = games.filter((game) => {
-    if (criteria.numPlayers && game.maxPlayers < criteria.numPlayers) {
+    // if number of players is specified and the game doesn't support that number of players, return false
+    if (
+      criteria.numPlayers &&
+      (game.minPlayers > criteria.numPlayers ||
+        game.maxPlayers < criteria.numPlayers)
+    ) {
       return false;
     }
-    if (criteria.playTime && game.maxPlayTime < criteria.playTime) {
+    if (
+      criteria.playTime &&
+      (game.minPlayTime > criteria.playTime ||
+        game.maxPlayTime < criteria.playTime)
+    ) {
       return false;
     }
     if (criteria.rating && game.rating < criteria.rating) {
