@@ -24,51 +24,52 @@ export const NearbyStores: FC = () => {
 
   function getStores(lat: number, lon: number) {
     // // this section is for the actual API call
-    // let base =
-    //   "https://us-central1-boardgamersparadise.cloudfunctions.net/getNearbyGameStores";
-    // let params = `?latitude=${lat}&longitude=${lon}`;
-    // let url = base + params
-    // fetch(url)
-    // .then(response => response.json())
-    // .then(json => {
-    //     setStores(json.data)
-    //     setStoresLoaded(true)
-    // }).catch(error => {
-    //     setError(true)
-    //     setStoresLoaded(true)
-    //     console.log(error)
-    // })
+    let base =
+      "https://us-central1-boardgamersparadise.cloudfunctions.net/getNearbyGameStores";
+    let params = `?latitude=${lat}&longitude=${lon}`;
+    let url = base + params;
+    fetch(url)
+      .then((response) => response.json())
+      .then((json) => {
+        setStores(json.data);
+        setStoresLoaded(true);
+      })
+      .catch((error) => {
+        setError(true);
+        setStoresLoaded(true);
+        console.log(error);
+      });
 
     // this section is for testing purposes only to avoid hitting the API limit
-    console.log("lat: " + lat);
-    console.log("lon: " + lon);
-    setStoresLoaded(true);
-    setStores([
-      {
-        name: "Board Game Barrister - Greenfield",
-        address: "6120 W Layton Ave, Greenfield, WI 53220",
-        rating: 4.5,
-        numRatings: 139,
-      },
-      {
-        name: "Board Game Barrister - Mayfair",
-        address: "2500 N Mayfair Rd, Wauwatosa, WI 53226",
-        rating: 3.7,
-        numRatings: 240,
-      },
-      {
-        name: "Board Game Barrister - Bayshore",
-        address: "5800 N Bayshore Dr, Glendale, WI 53217",
-        rating: 4.8,
-        numRatings: 124,
-      },
-      {
-        name: "Game Universe - Franklin",
-        address: "6550 S Lovers Ln, Franklin, WI 53132",
-        rating: 2.6,
-        numRatings: 49,
-      },
-    ]);
+    // console.log("lat: " + lat);
+    // console.log("lon: " + lon);
+    // setStoresLoaded(true);
+    // setStores([
+    //   {
+    //     name: "Board Game Barrister - Greenfield",
+    //     address: "6120 W Layton Ave, Greenfield, WI 53220",
+    //     rating: 4.5,
+    //     numRatings: 139,
+    //   },
+    //   {
+    //     name: "Board Game Barrister - Mayfair",
+    //     address: "2500 N Mayfair Rd, Wauwatosa, WI 53226",
+    //     rating: 3.7,
+    //     numRatings: 240,
+    //   },
+    //   {
+    //     name: "Board Game Barrister - Bayshore",
+    //     address: "5800 N Bayshore Dr, Glendale, WI 53217",
+    //     rating: 4.8,
+    //     numRatings: 124,
+    //   },
+    //   {
+    //     name: "Game Universe - Franklin",
+    //     address: "6550 S Lovers Ln, Franklin, WI 53132",
+    //     rating: 2.6,
+    //     numRatings: 49,
+    //   },
+    // ]);
   }
 
   useEffect(() => {
@@ -89,7 +90,7 @@ export const NearbyStores: FC = () => {
   }, []);
 
   return (
-    <Stack mt="2em" alignItems={"center"} height={"90vh"}>
+    <Stack mt="2em" mb="2em" alignItems={"center"}>
       {(!storesLoaded || !locationLoaded) && <CircularProgress />}
       {error && <Typography>Something went wrong.</Typography>}
       {stores.length === 0 && storesLoaded && (
