@@ -90,7 +90,7 @@ export const NearbyStores: FC = () => {
   }, []);
 
   return (
-    <Stack alignItems={"center"} height={"90vh"}>
+    <Stack alignItems={"center"} height={"90vh"} sx={{mt:15}}>
       {(!storesLoaded || !locationLoaded) && <CircularProgress />}
       {error && (
         <Typography>
