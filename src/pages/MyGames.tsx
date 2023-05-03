@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { auth, db } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { CircularProgress, Stack, Typography } from "@mui/material";
+import { Alert, CircularProgress, Stack, Typography } from "@mui/material";
 import { AddBoardGame } from "../components/AddBoardGame";
 import { UpdateBoardGame } from "../components/dashboardGame";
 import { doc, getDoc } from "firebase/firestore";
@@ -38,8 +38,6 @@ export const MyGames: FC = () => {
           if (data) {
             setGames(data.games);
           }
-        } else {
-          setError(true);
         }
       })
       .catch(() => {
@@ -50,32 +48,39 @@ export const MyGames: FC = () => {
       });
   }, [refreshTrigger, user]);
 
-
   return (
-    <Stack alignItems={"center"} justifyContent={"center"} sx={{ mt: 10 }}>
+    <Stack alignItems="center" justifyContent="center" sx={{ mt: 10 }}>
       {loading && <CircularProgress />}
       {error && <Typography>Something went wrong</Typography>}
       {games.length === 0 && !loading && !error && (
-        <Typography variant="h4">No games found</Typography>
+        <Alert severity="info">No games found</Alert>
       )}
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "beginning",
+          justifyContent: "center",
           flexWrap: "wrap",
-          width: 3 / 4,
-          maxHeight: 1 / 2,
-          overflowY: "auto",
+          gap: "15px",
+          width: "75%",
+          maxHeight: "50%",
         }}
       >
         {games.map((game, index) => (
-          <div key={index} style={{ padding: "15px" }}>
-            <UpdateBoardGame setRefreshTrigger={setRefreshTrigger} game={game} index={index}/>
-          </div>
+          <Box
+            key={index}
+            sx={{
+              justifyContent: "start",
+            }}
+          >
+            <UpdateBoardGame
+              game={game}
+              index={index}
+              setRefreshTrigger={setRefreshTrigger}
+            />
+          </Box>
         ))}
       </Box>
-      <Stack sx={{mt:4}} direction="row">
+      <Stack sx={{ mt: 4 }} direction="row">
         <AddBoardGame setRefreshTrigger={setRefreshTrigger} />
       </Stack>
     </Stack>
